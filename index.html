@@ -1,201 +1,164 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Why Project</title>
-<style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wahyu Project</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        font-family: 'Segoe UI', sans-serif;
-        color: white;
-        text-align: center;
+      background: linear-gradient(to right, #1a1a1a, #2c3e50);
+      color: white;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
     }
-    canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: -1;
-        background: black;
+
+    header, footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #111;
     }
-    /* LED Moving Text */
-    .led-banner {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        background: #111;
-        color: #0f0;
-        font-size: 1rem;
-        padding: 5px 0;
-        overflow: hidden;
-        z-index: 3;
-        box-shadow: 0 0 10px #0f0;
+
+    header {
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 1px;
     }
-    .led-text {
-        display: inline-block;
-        white-space: nowrap;
-        animation: scrollText 15s linear infinite;
-    }
-    @keyframes scrollText {
-        from { transform: translateX(100%); }
-        to { transform: translateX(-100%); }
-    }
-    .container {
-        position: relative;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 2;
-    }
-    .hacker-text {
-        font-size: 1rem;
-        color: #0f0;
-        text-shadow: 0 0 5px #0f0, 0 0 10px #0f0;
-        animation: glitch 1s infinite;
-        margin-bottom: 15px;
-    }
-    @keyframes glitch {
-        0% { text-shadow: 2px 0 red, -2px 0 blue; }
-        20% { text-shadow: -2px 0 red, 2px 0 blue; }
-        40% { text-shadow: 2px 0 red, -2px 0 blue; }
-        60% { text-shadow: -2px 0 red, 2px 0 blue; }
-        80% { text-shadow: 2px 0 red, -2px 0 blue; }
-        100% { text-shadow: 0 0 5px #0f0, 0 0 10px #0f0; }
-    }
-    h1 {
-        font-size: 2rem;
-        margin-bottom: 30px;
-        white-space: nowrap;
-        overflow: hidden;
-        border-right: 2px solid white;
-    }
-    .order-btn {
-        background: linear-gradient(45deg, #8B0000, #FF0000);
-        padding: 15px 40px;
-        font-size: 1.2rem;
-        color: white;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: 0.3s;
-        text-decoration: none;
-        box-shadow: 0 0 15px rgba(139,0,0,0.8), 0 0 30px rgba(255,0,0,0.6);
-        display: inline-block;
-    }
-    .order-btn:hover {
-        box-shadow: 0 0 25px rgba(255,0,0,1), 0 0 50px rgba(139,0,0,1);
-    }
-    .small-menu {
-        font-size: 1rem;
-        background: linear-gradient(45deg, #4B0082, #8B0000);
-        padding: 10px 20px;
-        border-radius: 20px;
-        margin-top: 15px;
-        text-decoration: none;
-        color: white;
-        transition: 0.3s;
-        display: inline-block;
-        box-shadow: 0 0 15px rgba(75,0,130,0.8), 0 0 30px rgba(139,0,0,0.6);
-    }
-    .small-menu:hover {
-        box-shadow: 0 0 25px rgba(139,0,0,1), 0 0 50px rgba(75,0,130,1);
-    }
+
     footer {
-        position: fixed;
-        bottom: 10px;
-        width: 100%;
-        text-align: center;
-        font-size: 0.9rem;
-        color: #ccc;
-        z-index: 2;
+      font-size: 14px;
     }
-</style>
+
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #quoteBox {
+      font-size: 22px;
+      max-width: 800px;
+      line-height: 1.7;
+      border-radius: 10px;
+      padding: 25px 30px;
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      min-height: 150px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .typing::after {
+      content: '|';
+      animation: blink 0.8s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    .btn {
+      padding: 12px 25px;
+      margin: 10px;
+      font-size: 16px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #555;
+    }
+
+    #openBtn {
+      animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.05); }
+    }
+  </style>
 </head>
 <body>
 
-<canvas id="matrixRain"></canvas>
+  <header>Wahyu Project</header>
 
-<!-- LED Running Text -->
-<div class="led-banner">
-    <div class="led-text">Please help subscribe to AlmerDev leader's channel, thank you</div>
-</div>
+  <div class="container">
+    <div id="quoteBox" class="typing"></div>
+    <button id="openBtn" class="btn" onclick="openQuotes()">Buka Kata-Kata</button>
+    <button id="nextBtn" class="btn" style="display:none;" onclick="nextQuote()">Berikutnya</button>
+  </div>
 
-<div class="container">
-    <div class="hacker-text">KALAU MAU BELI CHECKER LANGSUNG KLIK TOMBOL DIBAWAH</div>
-    <h1 id="typing"></h1>
-    <a href="https://wa.me/6287778913867?text=Halo%20saya%20ingin%20order%20file%20checker" target="_blank" class="order-btn">Klik untuk Order File Checker</a>
-    <a href="https://wahyuproject-droid.github.io/wptopup/" target="_blank" class="small-menu">TOPUP HANYA DI WPTOPUP</a>
-</div>
+  <footer>Copyright © 2025 Wahyu Project</footer>
 
-<footer>
-    Copyright © WAHYU PROJECT
-</footer>
+  <script>
+    const quotes = [
+      "1. Sekuat apapun kita berusaha melupakan, kenangan yang paling menyakitkan tak akan pernah lepas dari ingatan.",
+      "2. Setetes air mata dapat menggambarkan bahasa hati yang tak bisa kita ungkapkan dengan kata-kata.",
+      "3. Sakit hati bukan berarti hidup harus berhenti, tapi itu adalah panggilan untuk bangkit dan menguatkan diri.",
+      "4. Ketenangan terbesar dalam hidup adalah saat kita menerima bahwa kita tidak bisa mengubah masa lalu, tapi bisa membangun masa depan yang lebih baik.",
+      "5. Ketika kamu merasa kesepian dan tertekan, ingatlah bahwa ada seseorang di luar sana yang mencintaimu tanpa syarat.",
+      "6. Sedih adalah lembaran buku yang pernah kita baca, tapi tak pernah ingin membacanya lagi.",
+      "7. Ketika hati terluka, berbagilah dengan orang lain karena dibalik rasa sakit, mungkin ada yang juga sedang membutuhkanmu.",
+      "8. Jangan pernah menyalahkan diri sendiri atas kegagalan, karena kekuatanmu masih tersimpan dalam hati yang pernah hancur.",
+      "9. Berdamai dengan kesedihan adalah langkah pertama untuk menyembuhkan luka batin dan meregenerasi hati yang penuh harapan.",
+      "10. Kadang-kadang, apa yang paling menyakitkan adalah mencoba bertahan dalam sebuah hubungan yang tak lagi memberimu kebahagiaan.",
+      "11. Rasa sakit adalah ujian yang menguji ketahanan dan mengubah dirimu menjadi seseorang yang lebih kuat.",
+      "12. Anda dapat berjalan melalui kehidupan dengan luka hati atau berjalan dengan cinta yang menghangatkan jiwa Anda.",
+      "13. Kenangan pahit bisa menjadi pembelajaran berharga yang mengajarkan kita untuk mencintai dengan lebih bijak di masa depan.",
+      "14. Jangan biarkan kesedihan menguasai hidupmu, tapi izinkanlah dirimu untuk merasakannya dan kemudian melangkah maju dengan kekuatan baru.",
+      "15. Cinta sejati bukan hanya tentang menjadi bahagia bersama, tapi juga tentang saling mengasihi saat hati sedang terluka."
+    ];
 
-<script>
-    // Animasi ketik dan hapus
-    const text = "SELAMAT DATANG DI WEBSITE KAMI";
-    const typingElement = document.getElementById("typing");
-    let i = 0;
-    let isDeleting = false;
+    let current = 0;
 
-    function typeEffect() {
-        if (!isDeleting && i <= text.length) {
-            typingElement.textContent = text.substring(0, i);
-            i++;
-            setTimeout(typeEffect, 100);
-        } 
-        else if (isDeleting && i >= 0) {
-            typingElement.textContent = text.substring(0, i);
-            i--;
-            setTimeout(typeEffect, 50);
-        } 
-        else if (i > text.length) {
-            setTimeout(() => isDeleting = true, 1000);
-            setTimeout(typeEffect, 1000);
-        } 
-        else if (i < 0) {
-            isDeleting = false;
-            setTimeout(typeEffect, 500);
-        }
+    const quoteBox = document.getElementById("quoteBox");
+    const nextBtn = document.getElementById("nextBtn");
+    const openBtn = document.getElementById("openBtn");
+
+    function openQuotes() {
+      openBtn.style.display = "none";
+      quoteBox.style.display = "block";
+      nextBtn.style.display = "inline-block";
+      typeQuote(quotes[current]);
     }
-    typeEffect();
 
-    // Efek hujan Matrix
-    const canvas = document.getElementById("matrixRain");
-    const ctx = canvas.getContext("2d");
-
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-
-    const letters = "01";
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops = [];
-
-    for (let x = 0; x < columns; x++) drops[x] = 1;
-
-    function draw() {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = "#0F0";
-        ctx.font = fontSize + "px monospace";
-
-        for (let i = 0; i < drops.length; i++) {
-            const text = letters.charAt(Math.floor(Math.random() * letters.length));
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
-            drops[i]++;
-        }
+    function nextQuote() {
+      current++;
+      if (current >= quotes.length) {
+        current = 0; // kembali ke awal
+      }
+      typeQuote(quotes[current]);
     }
-    setInterval(draw, 33);
-</script>
+
+    function typeQuote(text) {
+      let i = 0;
+      quoteBox.textContent = "";
+      const typing = setInterval(() => {
+        quoteBox.textContent += text[i];
+        i++;
+        if (i >= text.length) {
+          clearInterval(typing);
+        }
+      }, 35); // kecepatan ketik
+    }
+  </script>
 
 </body>
 </html>
