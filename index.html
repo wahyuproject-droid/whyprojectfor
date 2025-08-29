@@ -1,164 +1,71 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Wahyu Project</title>
+  <meta charset="UTF-8">
+  <title>WhyProject - Admin</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    body { font-family:'Segoe UI',sans-serif; background:#0f2027; margin:0; color:white; }
+    header { background:#111; padding:15px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.6); }
+    header h2{ margin:0; color:#00eaff; }
+    main{ padding:20px; }
 
-    body {
-      background: linear-gradient(to right, #1a1a1a, #2c3e50);
-      color: white;
-      font-family: 'Courier New', Courier, monospace;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
+    .stats{ display:flex; justify-content:space-around; margin:20px 0; }
+    .stat{ background:rgba(255,255,255,0.1); padding:20px; border-radius:12px; text-align:center; flex:1; margin:0 10px; }
+    .stat h3{ margin:0; color:#00eaff; }
 
-    header, footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #111;
-    }
-
-    header {
-      font-size: 28px;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-
-    footer {
-      font-size: 14px;
-    }
-
-    .container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-    }
-
-    #quoteBox {
-      font-size: 22px;
-      max-width: 800px;
-      line-height: 1.7;
-      border-radius: 10px;
-      padding: 25px 30px;
-      background: rgba(255, 255, 255, 0.05);
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-      min-height: 150px;
-      margin-bottom: 20px;
-      display: none;
-    }
-
-    .typing::after {
-      content: '|';
-      animation: blink 0.8s infinite;
-    }
-
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
-    }
-
-    .btn {
-      padding: 12px 25px;
-      margin: 10px;
-      font-size: 16px;
-      background-color: #333;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      background-color: #555;
-    }
-
-    #openBtn {
-      animation: pulse 1s infinite alternate;
-    }
-
-    @keyframes pulse {
-      from { transform: scale(1); }
-      to { transform: scale(1.05); }
-    }
+    .order{ background:rgba(255,255,255,0.12); padding:15px; margin:15px 0; border-radius:12px; border-left:5px solid #00eaff; }
+    button{ padding:8px 15px; border:none; border-radius:8px; margin:5px; cursor:pointer; font-weight:bold; }
+    .btn-proses{ background:#00eaff; color:#111; }
+    .btn-selesai{ background:#4caf50; color:white; }
   </style>
 </head>
 <body>
-
-  <header>Wahyu Project</header>
-
-  <div class="container">
-    <div id="quoteBox" class="typing"></div>
-    <button id="openBtn" class="btn" onclick="openQuotes()">Buka Kata-Kata</button>
-    <button id="nextBtn" class="btn" style="display:none;" onclick="nextQuote()">Berikutnya</button>
-  </div>
-
-  <footer>Copyright © 2025 Wahyu Project</footer>
+  <header><h2>📊 Admin Dashboard - WhyProject</h2></header>
+  <main>
+    <div class="stats">
+      <div class="stat"><h3 id="total">0</h3>Total Order</div>
+      <div class="stat"><h3 id="menunggu">0</h3>Menunggu</div>
+      <div class="stat"><h3 id="proses">0</h3>Diproses</div>
+      <div class="stat"><h3 id="selesai">0</h3>Selesai</div>
+    </div>
+    <div id="listOrder"></div>
+  </main>
 
   <script>
-    const quotes = [
-      "1. Sekuat apapun kita berusaha melupakan, kenangan yang paling menyakitkan tak akan pernah lepas dari ingatan.",
-      "2. Setetes air mata dapat menggambarkan bahasa hati yang tak bisa kita ungkapkan dengan kata-kata.",
-      "3. Sakit hati bukan berarti hidup harus berhenti, tapi itu adalah panggilan untuk bangkit dan menguatkan diri.",
-      "4. Ketenangan terbesar dalam hidup adalah saat kita menerima bahwa kita tidak bisa mengubah masa lalu, tapi bisa membangun masa depan yang lebih baik.",
-      "5. Ketika kamu merasa kesepian dan tertekan, ingatlah bahwa ada seseorang di luar sana yang mencintaimu tanpa syarat.",
-      "6. Sedih adalah lembaran buku yang pernah kita baca, tapi tak pernah ingin membacanya lagi.",
-      "7. Ketika hati terluka, berbagilah dengan orang lain karena dibalik rasa sakit, mungkin ada yang juga sedang membutuhkanmu.",
-      "8. Jangan pernah menyalahkan diri sendiri atas kegagalan, karena kekuatanmu masih tersimpan dalam hati yang pernah hancur.",
-      "9. Berdamai dengan kesedihan adalah langkah pertama untuk menyembuhkan luka batin dan meregenerasi hati yang penuh harapan.",
-      "10. Kadang-kadang, apa yang paling menyakitkan adalah mencoba bertahan dalam sebuah hubungan yang tak lagi memberimu kebahagiaan.",
-      "11. Rasa sakit adalah ujian yang menguji ketahanan dan mengubah dirimu menjadi seseorang yang lebih kuat.",
-      "12. Anda dapat berjalan melalui kehidupan dengan luka hati atau berjalan dengan cinta yang menghangatkan jiwa Anda.",
-      "13. Kenangan pahit bisa menjadi pembelajaran berharga yang mengajarkan kita untuk mencintai dengan lebih bijak di masa depan.",
-      "14. Jangan biarkan kesedihan menguasai hidupmu, tapi izinkanlah dirimu untuk merasakannya dan kemudian melangkah maju dengan kekuatan baru.",
-      "15. Cinta sejati bukan hanya tentang menjadi bahagia bersama, tapi juga tentang saling mengasihi saat hati sedang terluka."
-    ];
-
-    let current = 0;
-
-    const quoteBox = document.getElementById("quoteBox");
-    const nextBtn = document.getElementById("nextBtn");
-    const openBtn = document.getElementById("openBtn");
-
-    function openQuotes() {
-      openBtn.style.display = "none";
-      quoteBox.style.display = "block";
-      nextBtn.style.display = "inline-block";
-      typeQuote(quotes[current]);
+    function loadOrders(){
+      let orders=JSON.parse(localStorage.getItem("orders")||"[]"), html="";
+      let menunggu=0, proses=0, selesai=0;
+      orders.forEach(o=>{
+        if(o.status==="Menunggu Admin") menunggu++;
+        else if(o.status==="Diproses") proses++;
+        else if(o.status==="Selesai") selesai++;
+        html+=`
+          <div class="order">
+            <b>${o.id}</b><br>User: ${o.username}<br>
+            Gunung: ${o.gunung}, Summit: ${o.jumlah}<br>
+            Total: Rp${o.total}<br>
+            Status: <b>${o.status}</b><br>
+            WA: ${o.whatsapp}<br>
+            <button class="btn-proses" onclick="updateStatus('${o.id}','Diproses','${o.whatsapp}')">Proses</button>
+            <button class="btn-selesai" onclick="updateStatus('${o.id}','Selesai','${o.whatsapp}')">Selesai</button>
+          </div>`;
+      });
+      document.getElementById("listOrder").innerHTML=html;
+      document.getElementById("total").innerText=orders.length;
+      document.getElementById("menunggu").innerText=menunggu;
+      document.getElementById("proses").innerText=proses;
+      document.getElementById("selesai").innerText=selesai;
     }
 
-    function nextQuote() {
-      current++;
-      if (current >= quotes.length) {
-        current = 0; // kembali ke awal
-      }
-      typeQuote(quotes[current]);
+    function updateStatus(id,status,wa){
+      let orders=JSON.parse(localStorage.getItem("orders")||"[]");
+      let i=orders.findIndex(o=>o.id===id);
+      if(i!==-1){ orders[i].status=status; localStorage.setItem("orders",JSON.stringify(orders)); 
+        alert("📩 WA dikirim ke "+wa+" untuk status: "+status); 
+        loadOrders(); }
     }
 
-    function typeQuote(text) {
-      let i = 0;
-      quoteBox.textContent = "";
-      const typing = setInterval(() => {
-        quoteBox.textContent += text[i];
-        i++;
-        if (i >= text.length) {
-          clearInterval(typing);
-        }
-      }, 35); // kecepatan ketik
-    }
+    loadOrders();
   </script>
-
 </body>
 </html>
